@@ -9,12 +9,17 @@ class Cat : public Animal {
         double *weight;
 
     public:
-        // Constructor that takes the cat name and weight as input.
+        // A constructor with parameters suppresses the compiler-generated
+        // default constructor, so Cat needs its own.
+        Cat();
         Cat(string, double);
-        
-        // TO DO: There are four functions that should be declared here. 
 
-        
+        // weight is allocated with new, so Cat needs a deep copy,
+        // a deep assignment, and a destructor (the Rule of Three).
+        Cat(const Cat& other);
+        Cat& operator=(const Cat& other);
+        ~Cat();
+
         // Accessor/Mutator functions for weight
         void SetWeight(double newWeight);
         double GetWeight() const;

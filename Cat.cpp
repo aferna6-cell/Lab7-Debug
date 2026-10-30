@@ -1,23 +1,38 @@
 #include "Cat.h"
 #include <iostream>
 using namespace std;
-#include <string>
 
-// TO DO: Write the code to assign the weight variable in the cat class to the entered weight       
-Cat::Cat(string newName, double newWeight) {
-    name = newName; 
-    type = "Cat";
-    weight = new double; 
-    *weight = newWeight; 
+// Default constructor: a Cat still needs its own weight allocation.
+Cat::Cat() : Animal("Romeo", "Cat"), weight(new double(0.0)) {
 }
 
-// TO DO: There are four functions that should be defined here.
-// These should match the ones you declared in Cat.h 
+// Constructor that receives a name and a weight.
+Cat::Cat(string newName, double newWeight)
+    : Animal(newName, "Cat"), weight(new double(newWeight)) {
+}
 
+// Copy constructor: allocate separate memory for the copied weight.
+Cat::Cat(const Cat& other)
+    : Animal(other), weight(new double(*other.weight)) {
+}
+
+// Copy assignment: copy both the Animal fields and the weight value.
+Cat& Cat::operator=(const Cat& other) {
+    if (this != &other) {
+        Animal::operator=(other);
+        *weight = *other.weight;
+    }
+    return *this;
+}
+
+// Destructor: free the memory owned by this Cat.
+Cat::~Cat() {
+    delete weight;
+}
 
 // Mutator Method
 void Cat::SetWeight(double newWeight) {
-    *weight = newWeight; 
+    *weight = newWeight;
 }
 
 // Accessor Method
@@ -25,10 +40,9 @@ double Cat::GetWeight() const {
     return *weight;
 }
 
-
 void Cat::print() const {
-    // Call the Animal class print functiom first. 
+    // Call the Animal class print function first.
     Animal::print();
-    // Then print the cat specdific information. 
+    // Then print the cat specific information.
     cout << "The cat weighs " << *weight << " pounds." << endl;
 }
